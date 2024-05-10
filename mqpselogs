@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+import os.path
+import sys
+
+whereami = os.path.split( os.path.realpath(__file__) )
+pathsplit = os.path.split(whereami[0])
+#print("here I am :", whereami, pathsplit)
+
+DEVMODPATH = [pathsplit[0],'/home/pi/Projects/moqputils']
+#print('Using DEVMODPATH=',DEVMODPATH)
+#os.chdir(pathsplit[0])
+
+for mypath in DEVMODPATH:
+        if ( os.path.exists(mypath) and \
+          (os.path.isfile(mypath) == False) ):
+            sys.path.insert(0, mypath)
+
+import argparse
+from __init__ import VERSION, CALLLIST
+#print(VERSION, CALLLIST)
+#from logsreceived import logsReceived, csvlogsRecvd, htmlLogsRecvd
+
+USAGE = \
+"""
+mqpselogs
+"""
+
+DESCRIPTION = \
+"""
+Search the MOQP database for 1x1 Special Event Station (SES) logs
+received. Display status for (log received/not recieved).
+"""
+
+EPILOG = \
+"""
+That is all!
+"""
+
+def parseMyArgs():
+    parser = argparse.ArgumentParser(\
+                    description = DESCRIPTION, usage = USAGE)
+    parser.add_argument('-v', '--version', 
+                        action='version', 
+                        version = VERSION)
+ 
+    parser.add_argument('-s', '--summary',
+            action='store_true', 
+            default=False,
+            help="""Instead of just a list of 1x1 calls, include score
+                    and QSO Counts from database summary table.""")
+    
+    parser.add_argument('-t', '--reportType',
+                                   default = 'csv',
+            help="""Set report type for output. Only valid if more than
+                    one report output type is avaible. Options are: 
+                    csv (Comma Separated Variables) for printing or
+                    for import to a spreadsheet, or 
+                    html for web page use.
+                    default value is csv""")
+
+    args = parser.parse_args()
+    return args
+    
+    
+if __name__ == '__main__':
+    args = parseMyArgs()
+    #logs = logsReceived(args, CALLLIST)
+    #logs = csvlogsRecvd(args, CALLLIST)
+    if (args.summary):
+        if args.reportType == 'csv':
+            from onebyonelogsreceived.logsreceived import logSummary
+            logs = logSummary(args, CALLLIST)
+        elif args.reportType == 'html':
+            from onebyonelogsreceived.logsreceived import htmlSummary
+            logs = htmlSummary(args, CALLLIST)
+        logs.showRpt(callList=CALLLIST)
+    else:
+        from onebyonelogsreceived.logsreceived import htmlLogsRecvd
+        logs = htmlLogsRecvd(args, CALLLIST)
+        print(logs.showRpt())
+
