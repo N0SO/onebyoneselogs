@@ -7,7 +7,7 @@ Update History is in file __init__.py
 """
 
 
-from onebyonelogsreceived.__init__ import VERSION
+from __init__ import VERSION
 from moqputils.moqpdbutils import *
 from moqputils.configs.moqpdbconfig import *
 from datetime import datetime

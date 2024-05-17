@@ -6,7 +6,9 @@ whereami = os.path.split( os.path.realpath(__file__) )
 pathsplit = os.path.split(whereami[0])
 #print("here I am :", whereami, pathsplit)
 
-DEVMODPATH = [pathsplit[0],'/home/pi/Projects/moqputils']
+DEVMODPATH = [pathsplit[0],'/home/pi/Projects/onebyoneselogs',
+                           '/home/pi/Projects/moqputils',
+                           '/home/pi/Projects']
 #print('Using DEVMODPATH=',DEVMODPATH)
 #os.chdir(pathsplit[0])
 
@@ -50,6 +52,7 @@ def parseMyArgs():
                     and QSO Counts from database summary table.""")
     
     parser.add_argument('-t', '--reportType',
+                                   choices = ['csv','html'],
                                    default = 'csv',
             help="""Set report type for output. Only valid if more than
                     one report output type is avaible. Options are: 
@@ -68,14 +71,14 @@ if __name__ == '__main__':
     #logs = csvlogsRecvd(args, CALLLIST)
     if (args.summary):
         if args.reportType == 'csv':
-            from onebyonelogsreceived.logsreceived import logSummary
+            from logsreceived import logSummary
             logs = logSummary(args, CALLLIST)
         elif args.reportType == 'html':
-            from onebyonelogsreceived.logsreceived import htmlSummary
+            from logsreceived import htmlSummary
             logs = htmlSummary(args, CALLLIST)
         logs.showRpt(callList=CALLLIST)
     else:
-        from onebyonelogsreceived.logsreceived import htmlLogsRecvd
+        from logsreceived import htmlLogsRecvd
         logs = htmlLogsRecvd(args, CALLLIST)
         print(logs.showRpt())
 

@@ -2,8 +2,12 @@
 Update History:
 * Sat Apr 13 2024 Mike Heitmann, N0SO <n0so@arrl.net>
 - V0.0.1 - First interation
+* Fri May 10 2024 Mike Heitmann, N0SO <n0so@arrl.net>
+- V1.0.0 - Production release version
+-          Created git repo.
+-          Fixed some module path errors.
 """
-VERSION = '0.0.1' 
+VERSION = '1.0.0' 
 
 CALLLIST = ['K0S', 'N0S', 'W0S',
             'K0H', 'N0H', 'W0H',
